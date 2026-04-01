@@ -6,6 +6,6 @@ export default defineConfig({
   schema: ["./db/schemas/auth-schema.ts", "./db/schemas/doctor-schema.ts"],
   out: "./drizzle",
   dbCredentials: {
-    url: "postgresql://admin:admin123@localhost:5435/wiskersCare",
+    url: process.env.DATABASE_URL!,
   },
 });

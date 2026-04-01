@@ -1,4 +1,3 @@
-// migrate.ts
 import "dotenv/config";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { drizzle } from "drizzle-orm/node-postgres";
@@ -6,7 +5,7 @@ import { Client } from "pg";
 
 const runMigrate = async () => {
   const client = new Client({
-    connectionString: "postgresql://admin:admin123@localhost:5435/wiskersCare",
+    connectionString: process.env.DATABASE_URL!,
   });
 
   await client.connect();
