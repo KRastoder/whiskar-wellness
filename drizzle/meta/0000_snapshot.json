@@ -1,5 +1,5 @@
 {
-  "id": "e34a4657-be6e-4d60-9a2d-c69d4e443fd4",
+  "id": "6d2bf379-6923-4864-acf5-b1ffcc939f45",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -281,12 +281,23 @@
           "notNull": true,
           "default": "now()"
         },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "display_username": {
+          "name": "display_username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "role": {
           "name": "role",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'user'"
+          "notNull": false
         },
         "banned": {
           "name": "banned",
@@ -306,12 +317,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
-        },
-        "user_name": {
-          "name": "user_name",
-          "type": "varchar(123)",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
@@ -325,11 +330,11 @@
             "email"
           ]
         },
-        "user_user_name_unique": {
-          "name": "user_user_name_unique",
+        "user_username_unique": {
+          "name": "user_username_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "user_name"
+            "username"
           ]
         }
       },
@@ -418,6 +423,12 @@
           "name": "specialty",
           "type": "specialty",
           "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vetenaryLisenceNumber": {
+          "name": "vetenaryLisenceNumber",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -535,6 +546,100 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
+      "checkConstraints": {
+        "day_of_week_valid": {
+          "name": "day_of_week_valid",
+          "value": "\"doctor_availability\".\"day_of_week\" >= 1 AND \"doctor_availability\".\"day_of_week\" <= 7"
+        },
+        "start_hour_valid": {
+          "name": "start_hour_valid",
+          "value": "\"doctor_availability\".\"start_hour\" >= 0 AND \"doctor_availability\".\"start_hour\" <= 24"
+        },
+        "end_hour_valid": {
+          "name": "end_hour_valid",
+          "value": "\"doctor_availability\".\"end_hour\" >= 0 AND \"doctor_availability\".\"end_hour\" <= 24"
+        },
+        "end_after_start": {
+          "name": "end_after_start",
+          "value": "\"doctor_availability\".\"end_hour\" > \"doctor_availability\".\"start_hour\""
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.doctor_booking": {
+      "name": "doctor_booking",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "doctor_id": {
+          "name": "doctor_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date": {
+          "name": "date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hour": {
+          "name": "hour",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "doctor_booking_doctor_id_doctor_id_fk": {
+          "name": "doctor_booking_doctor_id_doctor_id_fk",
+          "tableFrom": "doctor_booking",
+          "tableTo": "doctor",
+          "columnsFrom": [
+            "doctor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "doctor_booking_user_id_user_id_fk": {
+          "name": "doctor_booking_user_id_user_id_fk",
+          "tableFrom": "doctor_booking",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
     },
@@ -633,7 +738,29 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "unique_user_doctor_rating": {
+          "name": "unique_user_doctor_rating",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "doctor_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "doctor_ratings_doctor_id_doctor_id_fk": {
           "name": "doctor_ratings_doctor_id_doctor_id_fk",
