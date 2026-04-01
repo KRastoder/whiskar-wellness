@@ -49,7 +49,12 @@ export default function NavBar() {
             </Link>
           </li>
         </ul>
-        <Button className="">Book Now</Button>
+        <Link
+          href="/sign-up"
+          className="bg-black text-white px-6 py-2 rounded-lg border border-black hover:bg-white hover:text-black transition duration-300"
+        >
+          Sign up
+        </Link>
       </div>
     </nav>
   );

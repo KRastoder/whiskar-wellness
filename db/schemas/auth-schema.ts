@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  index,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -16,6 +23,10 @@ export const user = pgTable("user", {
   banned: boolean("banned").default(false),
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
+
+  //CUSTOM VALUE THIS IS ONLY USED AS A SLUG
+  //AND SHOULD NOT BE PASSED TO BETTER AUTH API
+  userName: varchar("user_name", { length: 123 }).unique().notNull(),
 });
 
 export const session = pgTable(
