@@ -14,8 +14,8 @@ export default function NavBar() {
         </Link>
         <h1 className="text-2xl">Whisker & Wellness</h1>
       </div>
-      <div className="flex gap-5 items-center">
-        <ul className="flex gap-5">
+      <div className="flex gap-10 items-center">
+        <ul className="flex gap-10">
           <li>
             <Link
               href={"/toys"}

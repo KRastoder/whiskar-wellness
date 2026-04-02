@@ -13,7 +13,11 @@ export default function TopSection() {
       </div>
       <div className="flex gap-4">
         <Button size={"lg"}>Shop Toys</Button>
-        <Button size={"lg"} variant={"secondary"}>
+        <Button
+          size={"lg"}
+          className="bg-secondary-foreground text-black"
+          variant={"secondary"}
+        >
           Book Vet
         </Button>
       </div>
