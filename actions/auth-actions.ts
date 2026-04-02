@@ -1,37 +1,155 @@
 "use server";
 
+import db from "@/db";
+import { doctor } from "@/db/schemas/doctor-schema";
 import { auth } from "@/lib/auth";
+import { z } from "zod";
+
+const signUpSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  name: z.string().min(1, "Name is required"),
+  username: z.string().min(3, "Username must be at least 3 characters"),
+});
+
+const signInSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+const doctorSignUpSchema = signUpSchema.extend({
+  specialty: z.enum([
+    "general_medicine",
+    "dental",
+    "cardiology",
+    "dermatology",
+    "surgery",
+  ]),
+  vetLicenseNumber: z
+    .string()
+    .transform(Number)
+    .pipe(
+      z.number().int().positive("License number must be a positive integer"),
+    ),
+  price: z
+    .string()
+    .transform(Number)
+    .pipe(z.number().int().positive("Price must be a positive integer")),
+  experience: z
+    .string()
+    .transform(Number)
+    .pipe(z.number().int().nonnegative("Experience cannot be negative")),
+  country: z.string().min(1, "Country is required"),
+  city: z.string().min(1, "City is required"),
+  address: z.string().min(1, "Address is required"),
+});
+
+function handleValidationError(error: unknown) {
+  if (error instanceof z.ZodError) {
+    return {
+      success: false,
+      error: "Validation failed",
+      issues: error.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      })),
+    };
+  }
+  return null;
+}
 
 export async function signUpAction(formData: FormData) {
-  //TODO REFACTOR LATER
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  await auth.api.signUpEmail({
-    body: {
-      email,
-      password,
-      name: formData.get("name") as string,
-      username: formData.get("username") as string,
-    },
-  });
-
-  return { success: true };
-}
-export async function signInAction(formData: FormData) {
-  //TODO REFACTOR LATER
   try {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const data = signUpSchema.parse(Object.fromEntries(formData));
+
+    await auth.api.signUpEmail({
+      body: {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        username: data.username,
+      },
+    });
+
+    return { success: true, message: "Account created successfully" };
+  } catch (error) {
+    const validationError = handleValidationError(error);
+    if (validationError) return validationError;
+
+    return {
+      success: false,
+      error: "Failed to create account",
+    };
+  }
+}
+
+export async function signInAction(formData: FormData) {
+  try {
+    const data = signInSchema.parse(Object.fromEntries(formData));
 
     await auth.api.signInEmail({
       body: {
-        email,
-        password,
+        email: data.email,
+        password: data.password,
       },
     });
-  } catch (e) {
-    console.error("Sign in error", e);
-    return { error: "Sign in failed" };
+
+    return { success: true, message: "Signed in successfully" };
+  } catch (error) {
+    const validationError = handleValidationError(error);
+    if (validationError) return validationError;
+
+    return {
+      success: false,
+      error: "Sign in failed",
+    };
+  }
+}
+
+export async function doctorSignUpAction(formData: FormData) {
+  try {
+    const data = doctorSignUpSchema.parse(Object.fromEntries(formData));
+
+    const signUpResult = await auth.api.signUpEmail({
+      body: {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        username: data.username,
+      },
+    });
+
+    if (!signUpResult?.user?.id) {
+      throw new Error("User creation failed");
+    }
+
+    const userId = signUpResult.user.id;
+
+    await db.transaction(async (tx) => {
+      await tx.insert(doctor).values({
+        id: userId,
+        specialty: data.specialty,
+        vetenaryLisenceNumber: data.vetLicenseNumber,
+        price: data.price,
+        experience: data.experience,
+        country: data.country,
+        city: data.city,
+        adress: data.address,
+      });
+    });
+
+    return {
+      success: true,
+      message: "Doctor account created successfully",
+      doctorId: userId,
+    };
+  } catch (error) {
+    const validationError = handleValidationError(error);
+    if (validationError) return validationError;
+
+    return {
+      success: false,
+      error: "Failed to create doctor account",
+    };
   }
 }
