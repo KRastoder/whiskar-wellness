@@ -19,7 +19,7 @@ type DoctorCardProps = {
 
 export default function DoctorCard({
   doctor,
-  linkBase = "/vets",
+  linkBase = "/vets/search",
   fallbackImage = "/dentist-svgrepo-com.svg",
 }: DoctorCardProps) {
   return (

@@ -74,6 +74,14 @@ export default function SignUpComponent() {
               Already have an account? Login
             </a>
           </div>
+          <div>
+            <a
+              href="/doctor-sign-up"
+              className="text-sky-500 font-bold underline"
+            >
+              Doctor sign up
+            </a>
+          </div>
         </div>
       </Card>
     </div>

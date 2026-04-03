@@ -5,7 +5,7 @@ import { user } from "@/db/schemas/auth-schema";
 import { doctor } from "@/db/schemas/doctor-schema";
 import { eq } from "drizzle-orm";
 
-type Specialty = (typeof doctor.specialty.enumValues)[number];
+export type Specialty = (typeof doctor.specialty.enumValues)[number];
 
 export const fetchAllDoctors = async () => {
   try {
