@@ -1,36 +1,33 @@
 "use server";
-import {
-  fetchAllDoctors,
-  fetchDoctorsBySpecialty,
-} from "../../../actions/doctors/doctor-fetch-actions";
+import DoctorCard from "@/components/doctor-components/DoctorCard";
+import { fetchAllDoctors } from "../../../actions/doctors/doctor-fetch-actions";
 
 export default async function VetsPage() {
   const doctors = await fetchAllDoctors();
-  const detarmotlogyDoctors = await fetchDoctorsBySpecialty("dermatology");
 
   return (
-    <div>
-      <h1>TEST</h1>
-      <div>
-        <h1>ALL DOCTORS</h1>
-        {doctors.map((doctor) => (
-          <div key={doctor.id}>
-            <h1>{doctor.name}</h1>
-            <p>{doctor.specialty}</p>
-            <p>{doctor.city}</p>
-            <p>{doctor.price}€</p>
-          </div>
-        ))}
-        <h1>DETERMATOLOGY </h1>
-        <div>
-          {detarmotlogyDoctors.map((doctor) => (
-            <div key={doctor.id}>
-              <h1>{doctor.name}</h1>
-              <p>{doctor.specialty}</p>
-              <p>{doctor.city}</p>
-              <p>{doctor.price}€</p>
-            </div>
-          ))}
+    <div className="bg-sky-50 min-h-screen px-4 py-8">
+      <div className="max-w-7xl mx-auto flex flex-col gap-8">
+        {/* Title */}
+        <h1 className="text-3xl md:text-4xl font-black text-center">
+          🐾 All Doctors
+        </h1>
+
+        {/* Grid */}
+        <div
+          className="grid gap-6 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-4"
+        >
+          {doctors.length > 0 ? (
+            doctors.map((doctor) => (
+              <DoctorCard key={doctor.id} doctor={doctor} />
+            ))
+          ) : (
+            <p className="col-span-full text-center font-bold">No vets found</p>
+          )}
         </div>
       </div>
     </div>

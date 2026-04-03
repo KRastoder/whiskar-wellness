@@ -50,7 +50,7 @@ export const fetchDoctorsBySpecialty = async (specialty: Specialty) => {
 
     return res;
   } catch (e) {
-    console.error("Fetch failed", e);
+    console.error("Fetch by specialty failed", e);
     return [];
   }
 };
