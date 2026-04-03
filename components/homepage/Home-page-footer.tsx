@@ -25,7 +25,7 @@ export default function HomePageFooter() {
         </div>
 
         <div className="w-full border-t border-sky-200 pt-5 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-600 gap-2">
-          <p>© 2024 Whisker & Wellness. All rights reserved.</p>
+          <p>© 2026 Whisker & Wellness. All rights reserved.</p>
           <p className="font-medium">Purring with care 🐱</p>
         </div>
       </div>

@@ -19,7 +19,7 @@ export default function SpecialistDoctorCard({
     <Card className="w-full h-full flex flex-col justify-between gap-0 border-4 border-black rounded-none ">
       {/* Header Banner */}
       <div className="bg-yellow-300 border-b-4 border-black px-4 py-3">
-        <h1 className="text-lg font-black uppercase tracking-tight">
+        <h1 className="text-xl font-black uppercase tracking-tight text-center">
           {header}
         </h1>
       </div>

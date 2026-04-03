@@ -1,7 +1,7 @@
 export default function WhyChooseSection() {
   return (
-    <div className=" py-10">
-      <h2 className="text-xl font-semibold mb-6">
+    <div className=" py-30 flex flex-col gap-5">
+      <h2 className="text-3xl font-semibold mb-6 text-center">
         Why Choose Whisker & Wellness?
       </h2>
 

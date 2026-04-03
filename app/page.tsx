@@ -39,7 +39,7 @@ export default function Home() {
           />
         </div>
       </section>
-      <section className="bg-sky-200 flex items-center justify-center w-full">
+      <section className="bg-sky-100 flex items-center justify-center w-full">
         <WhyChooseSection />
       </section>
       <HomePageFooter />

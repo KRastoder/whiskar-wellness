@@ -154,7 +154,7 @@ export default function DoctorSignUpComponent() {
               <Label>CLINIC ADDRESS</Label>
               <Input
                 type="text"
-                name="address "
+                name="address"
                 placeholder="Street Name"
                 required
               />
