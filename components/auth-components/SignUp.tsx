@@ -12,16 +12,13 @@ export default function SignUpComponent() {
 
   return (
     <div className="min-h-[90vh] bg-gray-50 flex items-start justify-center pt-10 px-4 mb-10">
-      <Card className="w-full max-w-2xl border-4 border-black bg-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+      <Card className="outline-black outline-6">
         {/* Header */}
         <div className="bg-sky-300 p-8">
-          <h1 className="text-5xl font-black text-white tracking-tight mb-6">
+          <h1 className="text-3xl font-black text-black tracking-tight ">
             SIGN UP
           </h1>
-
-          <div className="py-4 text-center font-black border-2 border-white bg-sky-500 text-white">
-            👤 USER
-          </div>
+          <p> Join us today! Enter your details to create your account.</p>
         </div>
 
         {/* Body */}
