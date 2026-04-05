@@ -54,3 +54,32 @@ export const fetchDoctorsBySpecialty = async (specialty: Specialty) => {
     return [];
   }
 };
+
+export const fetchDoctorByUserName = async (userName: string) => {
+  if (!userName?.trim()) {
+    return null;
+  }
+
+  try {
+    const res = await db
+      .select({
+        id: doctor.id,
+        specialty: doctor.specialty,
+        name: user.name,
+        experience: doctor.experience,
+        price: doctor.price,
+        city: doctor.city,
+        country: doctor.country,
+        rating: doctor.rating,
+      })
+      .from(doctor)
+      .innerJoin(user, eq(doctor.id, user.id))
+      .where(eq(user.username, userName))
+      .limit(1);
+
+    return res.length > 0 ? res[0] : null;
+  } catch (e) {
+    console.error("Error fetching doctor by username:", { userName, error: e });
+    throw new Error("Failed to fetch doctor profile");
+  }
+};

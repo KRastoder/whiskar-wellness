@@ -9,7 +9,7 @@ import {
   uniqueIndex,
   check,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm";
 import { user } from "./auth-schema";
 
 const specialtyEnum = pgEnum("specialty", [
@@ -23,7 +23,7 @@ const specialtyEnum = pgEnum("specialty", [
 export const doctor = pgTable("doctor", {
   id: text("id")
     .primaryKey()
-    .references(() => user.id),
+    .references(() => user.id, { onDelete: "cascade" }),
   specialty: specialtyEnum("specialty").notNull(),
   vetenaryLisenceNumber: integer().notNull(),
   price: integer("price").notNull(),
@@ -114,3 +114,14 @@ export const doctorBooking = pgTable("doctor_booking", {
   hour: integer("hour").notNull(),
   price: integer("price").notNull(),
 });
+
+export const doctorRelations = relations(doctor, ({ one }) => ({
+  user: one(user, {
+    fields: [doctor.id],
+    references: [user.id],
+  }),
+}));
+
+export const userDoctorRelations = relations(user, ({ one }) => ({
+  doctorProfile: one(doctor),
+}));

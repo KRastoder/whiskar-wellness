@@ -54,3 +54,30 @@ export const searchDoctorsBySpeciality = async ({
     return []; // fallback
   }
 };
+
+export const searchDoctorsByUserName = async ({
+  userName,
+}: {
+  userName: string;
+}) => {
+  try {
+    const res = await db
+      .select({
+        id: doctor.id,
+        specialty: doctor.specialty,
+        name: user.name,
+      })
+      .from(doctor)
+      .innerJoin(user, eq(doctor.id, user.id))
+      .where(eq(user.name, userName));
+
+    if (res.length === 0) {
+      return { error: "No doctors found" };
+    }
+
+    return res;
+  } catch (e) {
+    console.error("Doctor-search by userName action error", e);
+    return { error: "Search failed" };
+  }
+};

@@ -14,28 +14,28 @@ export default function Home() {
             imagePath="/veterinarian-svgrepo-com.svg"
             description="Health checkups"
             price={50}
-            linkURL="/book/dentist"
+            linkURL="/vets/tags/general_medicine"
           />
           <SpecalistDoctorCard
             header="Cardiologist"
             imagePath="/cardiology-svgrepo-com.svg"
             description="Heart specialist"
             price={80}
-            linkURL="/book/cardiologist"
+            linkURL="/vets/tags/cardiology"
           />
           <SpecalistDoctorCard
             header="Dermatologist"
             imagePath="/dermathology-skin-svgrepo-com.svg"
             description="Skin treatments"
             price={60}
-            linkURL="/book/dermatologist"
+            linkURL="/vets/tags/dermatology"
           />
           <SpecalistDoctorCard
             header="Dentist"
             imagePath="/dentist-svgrepo-com.svg"
             description="Teeth and oral care"
             price={55}
-            linkURL="/book/pediatrician"
+            linkURL="/vets/tags/dental"
           />
         </div>
       </section>
