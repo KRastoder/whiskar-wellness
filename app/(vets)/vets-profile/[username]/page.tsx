@@ -7,9 +7,7 @@ export default async function VetsProfilePage({
 }) {
   const { username } = await params;
 
-  console.log("Username:", username);
   const result = await fetchDoctorByUserName(username);
-  console.log("Result:", result);
 
   return (
     <div>

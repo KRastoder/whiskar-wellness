@@ -13,7 +13,6 @@ export default async function VetSearchPage({
   return (
     <div>
       <h1>{search}</h1>
-
       <div>
         {hasResults ? (
           result.map((doctor) => (

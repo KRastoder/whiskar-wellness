@@ -21,7 +21,7 @@ export const user = pgTable(
     banReason: text("ban_reason"),
     banExpires: timestamp("ban_expires"),
   },
-  (table) => [index("user_username_idx").on(table.username)], // ✅ Added index
+  (table) => [index("user_username_idx").on(table.username)],
 );
 
 export const session = pgTable(
