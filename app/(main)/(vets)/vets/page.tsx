@@ -1,6 +1,6 @@
 "use server";
+import { fetchAllDoctors } from "@/actions/doctors/doctor-fetch-actions";
 import DoctorCard from "@/components/doctor-components/DoctorCard";
-import { fetchAllDoctors } from "../../../actions/doctors/doctor-fetch-actions";
 
 export default async function VetsPage() {
   const doctors = await fetchAllDoctors();

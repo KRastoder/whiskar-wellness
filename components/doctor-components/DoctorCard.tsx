@@ -4,6 +4,7 @@ import { Card } from "../retroui/Card";
 
 export type DoctorCardData = {
   id: string;
+  username: string;
   name: string;
   image: string | null;
   specialty: string;
@@ -19,7 +20,7 @@ type DoctorCardProps = {
 
 export default function DoctorCard({
   doctor,
-  linkBase = "/vets/search",
+  linkBase = "/vets-profile/",
   fallbackImage = "/dentist-svgrepo-com.svg",
 }: DoctorCardProps) {
   return (
@@ -67,7 +68,7 @@ export default function DoctorCard({
 
       {/* Button */}
       <Link
-        href={`${linkBase}/${doctor.id}`}
+        href={`${linkBase}/${doctor.username}`}
         className="block w-full bg-sky-300 border-t-4 border-black px-4 py-3 text-center font-black uppercase hover:bg-sky-400 active:translate-y-1 transition-all text-sm"
       >
         📅 Book Appointment

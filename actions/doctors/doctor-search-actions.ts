@@ -39,6 +39,7 @@ export const searchDoctorsBySpeciality = async ({
         id: doctor.id,
         specialty: doctor.specialty,
         name: user.name,
+        username: user.username,
         image: user.image,
         price: doctor.price,
         city: doctor.city,
@@ -48,36 +49,9 @@ export const searchDoctorsBySpeciality = async ({
       .innerJoin(user, eq(doctor.id, user.id))
       .where(eq(doctor.specialty, specialty));
 
-    return res; // always array
-  } catch (e) {
-    console.error(e);
-    return []; // fallback
-  }
-};
-
-export const searchDoctorsByUserName = async ({
-  userName,
-}: {
-  userName: string;
-}) => {
-  try {
-    const res = await db
-      .select({
-        id: doctor.id,
-        specialty: doctor.specialty,
-        name: user.name,
-      })
-      .from(doctor)
-      .innerJoin(user, eq(doctor.id, user.id))
-      .where(eq(user.name, userName));
-
-    if (res.length === 0) {
-      return { error: "No doctors found" };
-    }
-
     return res;
   } catch (e) {
-    console.error("Doctor-search by userName action error", e);
-    return { error: "Search failed" };
+    console.error(e);
+    return [];
   }
 };

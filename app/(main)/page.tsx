@@ -1,7 +1,7 @@
 import SpecalistDoctorCard from "@/components/homepage/SpecalistDoctorCard";
-import TopSection from "../components/homepage/TopSection";
+import TopSection from "@/components/homepage/TopSection";
 import WhyChooseSection from "@/components/homepage/WhyChoseSection";
-import HomePageFooter from "../components/homepage/Home-page-footer";
+import HomePageFooter from "@/components/homepage/Home-page-footer";
 
 export default function Home() {
   return (

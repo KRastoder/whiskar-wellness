@@ -13,6 +13,7 @@ export const fetchAllDoctors = async () => {
       .select({
         id: doctor.id,
         name: user.name,
+        username: user.username,
         email: user.email,
         image: user.image, // TODO ADD IMAGE UPLOAD BUT ONLY FOR DOCTORS NOT USERS
         specialty: doctor.specialty,
