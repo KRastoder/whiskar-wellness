@@ -16,6 +16,7 @@ export const fetchAllDoctors = async () => {
         username: user.username,
         email: user.email,
         image: user.image, // TODO ADD IMAGE UPLOAD BUT ONLY FOR DOCTORS NOT USERS
+        vetenaryLisenceNumber: doctor.vetenaryLisenceNumber,
         specialty: doctor.specialty,
         price: doctor.price,
         experience: doctor.experience,
