@@ -1,6 +1,5 @@
 import { Cat } from "lucide-react";
 import Link from "next/link";
-import { Button } from "./retroui/Button";
 
 export default function NavBar() {
   return (

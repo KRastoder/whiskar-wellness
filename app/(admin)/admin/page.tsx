@@ -1,5 +1,6 @@
 import { fetchAllDoctors } from "@/actions/doctors/doctor-fetch-actions";
-import DoctorTable from "@/components/admin/DoctorTable";
+import { fetchAllUsers } from "@/actions/users/fetchUsersActions";
+import AdminTabs from "@/components/admin/AdminTabs";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -9,21 +10,15 @@ export default async function AdminPage() {
     headers: await headers(),
   });
 
-  if (!session) {
-    notFound();
-  }
-  if (session.user.role !== "admin") {
+  if (!session || session.user.role !== "admin") {
     notFound();
   }
   const doctors = await fetchAllDoctors();
+  const users = await fetchAllUsers();
 
   return (
     <div>
-      <h1>Hello {session.user.username}</h1>
-      <h2>Admin sigma</h2>
-      <div>
-        <DoctorTable doctors={doctors} />
-      </div>
+      <AdminTabs users={users} doctors={doctors} />
     </div>
   );
 }
