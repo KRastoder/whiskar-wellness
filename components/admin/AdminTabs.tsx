@@ -5,6 +5,7 @@ import DoctorTable from "@/components/admin/DoctorTable";
 import UserTable from "@/components/admin/UserTable";
 
 type Props = {
+  //TODO MAKE THIS TYPE SAFE LATER
   doctors: any[];
   users: any[];
 };

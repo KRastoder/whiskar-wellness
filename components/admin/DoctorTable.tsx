@@ -24,7 +24,7 @@ type DoctorTableProps = {
 
 export default function DoctorTable({ doctors }: DoctorTableProps) {
   return (
-    <Table className="max-w-5xl mb-6 mx-auto">
+    <Table className="max-w-10xl mb-6 mx-auto">
       <Table.Header>
         <Table.Row>
           <Table.Head>Name</Table.Head>
@@ -45,7 +45,7 @@ export default function DoctorTable({ doctors }: DoctorTableProps) {
           <Table.Row key={doctor.id}>
             <Table.Cell>{doctor.name}</Table.Cell>
             <Table.Cell>{doctor.username}</Table.Cell>
-            <Table.Cell className="truncate max-w-[150px]">
+            <Table.Cell className="truncate max-w-[350px]">
               {doctor.email}
             </Table.Cell>
             <Table.Cell>
