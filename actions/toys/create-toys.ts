@@ -6,6 +6,7 @@ import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 
 export const createToy = async (formData: FormData) => {
+  // TODO ADD FILE TYPES LIKE PNG ETC ...
   const name = formData.get("name") as string;
   const price = Number(formData.get("price"));
   const discount = Number(formData.get("discount") || 0);

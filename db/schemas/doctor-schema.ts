@@ -102,18 +102,28 @@ export const doctorComments = pgTable("doctor_review", {
   review: text("comment").notNull(),
 });
 
-export const doctorBooking = pgTable("doctor_booking", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  doctorId: text("doctor_id")
-    .references(() => doctor.id)
-    .notNull(),
-  userId: text("user_id")
-    .references(() => user.id)
-    .notNull(),
-  date: date("date").notNull(),
-  hour: integer("hour").notNull(),
-  price: integer("price").notNull(),
-});
+export const doctorBooking = pgTable(
+  "doctor_booking",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    doctorId: text("doctor_id")
+      .references(() => doctor.id)
+      .notNull(),
+    userId: text("user_id")
+      .references(() => user.id)
+      .notNull(),
+    date: date("date").notNull(),
+    hour: integer("hour").notNull(),
+    price: integer("price").notNull(),
+  },
+  (table) => ({
+    uniqueDoctorSlot: uniqueIndex("unique_doctor_slot").on(
+      table.doctorId,
+      table.date,
+      table.hour,
+    ),
+  }),
+);
 
 export const doctorRelations = relations(doctor, ({ one }) => ({
   user: one(user, {
