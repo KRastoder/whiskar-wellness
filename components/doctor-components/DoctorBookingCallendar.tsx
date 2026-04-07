@@ -4,20 +4,33 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createBooking } from "@/actions/doctors/doctor-booking-actions";
 
+import { Clock } from "lucide-react";
+import { Card } from "../retroui/Card";
+import { Button } from "../retroui/Button";
+import { Text } from "../retroui/Text";
+
+/* ================= TYPES ================= */
+
+type Booking = {
+  date: string;
+  hour: number;
+};
+
+type Availability = {
+  dayOfWeek: number;
+  startHour: number;
+  endHour: number;
+};
+
 type Props = {
   doctorId: string;
   userId: string;
   price: number;
-  availability: {
-    dayOfWeek: number;
-    startHour: number;
-    endHour: number;
-  }[];
-  bookings: {
-    date: string;
-    hour: number;
-  }[];
+  availability: Availability[];
+  bookings: Booking[];
 };
+
+/* ================= COMPONENT ================= */
 
 export default function DoctorBookingCalendar({
   doctorId,
@@ -34,6 +47,7 @@ export default function DoctorBookingCalendar({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  /* ===== Booked Map ===== */
   const bookedMap = useMemo(() => {
     const map: Record<string, number[]> = {};
 
@@ -45,8 +59,9 @@ export default function DoctorBookingCalendar({
     return map;
   }, [bookings]);
 
+  /* ===== Days (30 days) ===== */
   const days = useMemo(() => {
-    const arr = [];
+    const arr: Date[] = [];
     const today = new Date();
 
     for (let i = 0; i < 30; i++) {
@@ -58,6 +73,7 @@ export default function DoctorBookingCalendar({
     return arr;
   }, []);
 
+  /* ===== Available Hours ===== */
   const getAvailableHours = (date: Date) => {
     const jsDay = date.getDay();
     const dayOfWeek = jsDay === 0 ? 7 : jsDay;
@@ -75,6 +91,7 @@ export default function DoctorBookingCalendar({
     return hours;
   };
 
+  /* ===== Booking Action ===== */
   const handleBook = () => {
     if (!selected) return;
 
@@ -94,54 +111,86 @@ export default function DoctorBookingCalendar({
     });
   };
 
+  /* ================= UI ================= */
+
   return (
-    <div className="grid grid-cols-7 gap-2">
-      {days.map((day) => {
-        const dateStr = day.toISOString().split("T")[0];
+    <div className="space-y-4">
+      {/* GRID */}
+      <div className="grid grid-cols-7 gap-2">
+        {days.map((day) => {
+          const dateStr = day.toISOString().split("T")[0];
 
-        const availableHours = getAvailableHours(day);
-        const bookedHours = bookedMap[dateStr] || [];
+          const availableHours = getAvailableHours(day);
+          const bookedHours = bookedMap[dateStr] || [];
 
-        const freeHours = availableHours.filter(
-          (h) => !bookedHours.includes(h),
-        );
+          const freeHours = availableHours.filter(
+            (h) => !bookedHours.includes(h),
+          );
 
-        return (
-          <div key={dateStr} className="border p-2">
-            <div className="text-xs font-bold">{day.getDate()}</div>
+          return (
+            <Card
+              key={dateStr}
+              className="p-2 border-2 shadow-[3px_3px_0px_0px_black]"
+            >
+              {/* DAY */}
+              <Text className="text-xs font-bold mb-1">{day.getDate()}</Text>
 
-            {freeHours.length === 0 ? (
-              <div className="text-xs opacity-40">No availability</div>
-            ) : (
-              freeHours.map((hour) => (
-                <button
-                  key={hour}
-                  onClick={() =>
-                    setSelected({
-                      date: dateStr,
-                      hour,
-                    })
-                  }
-                  className="block text-xs w-full"
-                >
-                  {hour}:00
-                </button>
-              ))
-            )}
-          </div>
-        );
-      })}
+              {/* HOURS */}
+              {freeHours.length === 0 ? (
+                <Text className="text-[10px] text-muted-foreground">—</Text>
+              ) : (
+                <div className="space-y-1">
+                  {freeHours.slice(0, 4).map((hour) => {
+                    const isSelected =
+                      selected?.date === dateStr && selected?.hour === hour;
 
+                    return (
+                      <button
+                        key={hour}
+                        onClick={() =>
+                          setSelected({
+                            date: dateStr,
+                            hour,
+                          })
+                        }
+                        className={`
+                          w-full text-[10px] flex items-center justify-center gap-1
+                          border px-1 py-[2px] transition
+                          active:translate-x-[2px] active:translate-y-[2px]
+                          ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground border-black"
+                              : "bg-card hover:bg-accent border-border"
+                          }
+                        `}
+                      >
+                        <Clock className="w-3 h-3" />
+                        {hour}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* FOOTER */}
       {selected && (
-        <div className="col-span-7 mt-4">
-          <p>
-            Selected: {selected.date} at {selected.hour}:00
-          </p>
+        <Card className="p-3 border-2 shadow-[4px_4px_0px_0px_black] flex items-center justify-between">
+          <Text className="text-sm">
+            {selected.date} • {selected.hour}:00
+          </Text>
 
-          <button onClick={handleBook} disabled={isPending}>
-            {isPending ? "Booking..." : "Confirm Booking"}
-          </button>
-        </div>
+          <Button
+            onClick={handleBook}
+            disabled={isPending}
+            className="border-2 border-black shadow-[2px_2px_0px_0px_black]"
+          >
+            {isPending ? "..." : `$${price}`}
+          </Button>
+        </Card>
       )}
     </div>
   );

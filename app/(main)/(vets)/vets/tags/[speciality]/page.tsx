@@ -3,6 +3,8 @@ import { searchDoctorsBySpeciality } from "@/actions/doctors/doctor-search-actio
 import { isValidSpecialty } from "@/lib/validator";
 import { notFound } from "next/navigation";
 
+import { Stethoscope } from "lucide-react";
+
 export default async function SpecialityPage({
   params,
 }: {
@@ -18,32 +20,37 @@ export default async function SpecialityPage({
     specialty: speciality,
   });
 
-  return (
-    <div className="bg-sky-50 min-h-screen px-4 py-8">
-      <div className="max-w-7xl mx-auto flex flex-col gap-8">
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-black text-center capitalize">
-          🩺 {speciality.replaceAll("_", " ")}
-        </h1>
+  const formatted = speciality.replaceAll("_", " ");
 
-        {/* Grid */}
-        <div
-          className="grid gap-6 
-          grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
-          lg:grid-cols-4"
-        >
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      {/* MAIN PANEL */}
+      <div className="w-full max-w-2xl border border-border bg-card text-card-foreground rounded-lg p-4 space-y-4">
+        {/* HEADER */}
+        <div className="flex items-center justify-center gap-2 border-b border-border pb-2">
+          <Stethoscope className="w-4 h-4 text-primary" />
+          <h1 className="text-sm font-bold capitalize">{formatted}</h1>
+        </div>
+
+        {/* RESULTS */}
+        <div className="space-y-2">
           {doctors.length > 0 ? (
             doctors.map((doctor) => (
               <DoctorCard key={doctor.id} doctor={doctor} />
             ))
           ) : (
-            <p className="col-span-full text-center font-bold">
-              No vets found for this specialty
+            <p className="text-center text-xs text-muted-foreground py-6">
+              No results found
             </p>
           )}
         </div>
+
+        {/* FOOTER */}
+        {doctors.length > 0 && (
+          <div className="text-[10px] text-center text-muted-foreground border-t border-border pt-2">
+            {doctors.length} doctor{doctors.length !== 1 && "s"} available
+          </div>
+        )}
       </div>
     </div>
   );
