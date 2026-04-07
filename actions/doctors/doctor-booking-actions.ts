@@ -36,9 +36,10 @@ export const createBooking = async ({
     )
     .limit(1);
 
-  if (!availability) {
+  if (availability.length === 0) {
     throw new Error("Doctor is not available at this time");
   }
+
   const formattedDate = new Date(date).toISOString().split("T")[0];
 
   const res = await db
@@ -53,4 +54,35 @@ export const createBooking = async ({
     .returning();
 
   return res[0];
+};
+
+export const getDoctorBookings = async ({
+  doctorId,
+  from,
+  to,
+}: {
+  doctorId: string;
+  from: Date;
+  to: Date;
+}) => {
+  const fromStr = from.toISOString().split("T")[0];
+  const toStr = to.toISOString().split("T")[0];
+
+  return await db
+    .select()
+    .from(doctorBooking)
+    .where(
+      and(
+        eq(doctorBooking.doctorId, doctorId),
+        gte(doctorBooking.date, fromStr),
+        lte(doctorBooking.date, toStr),
+      ),
+    );
+};
+
+export const getDoctorAvailability = async (doctorId: string) => {
+  return await db
+    .select()
+    .from(doctorAvailability)
+    .where(eq(doctorAvailability.doctorId, doctorId));
 };

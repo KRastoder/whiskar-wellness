@@ -1,7 +1,7 @@
 export type CreateBookingInput = {
   userId: string;
   doctorId: string;
-  date: Date;
+  date: string;
   hour: number;
   price: number;
 };
