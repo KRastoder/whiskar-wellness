@@ -1,8 +1,10 @@
 "use server";
 
 import db from "@/db";
+import { user } from "@/db/schemas/auth-schema";
 import { doctor } from "@/db/schemas/doctor-schema";
 import { auth } from "@/lib/auth";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 const signUpSchema = z.object({
@@ -124,6 +126,8 @@ export async function doctorSignUpAction(formData: FormData) {
     }
 
     const userId = signUpResult.user.id;
+
+    await db.update(user).set({ role: "doctor" }).where(eq(user.id, userId));
 
     await db.transaction(async (tx) => {
       await tx.insert(doctor).values({
