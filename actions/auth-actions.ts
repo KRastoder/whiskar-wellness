@@ -6,6 +6,8 @@ import { doctor } from "@/db/schemas/doctor-schema";
 import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 const signUpSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -156,4 +158,12 @@ export async function doctorSignUpAction(formData: FormData) {
       error: "Failed to create doctor account",
     };
   }
+}
+
+export default async function logOutAction() {
+  await auth.api.signOut({
+    headers: await headers(),
+  });
+
+  redirect("/");
 }

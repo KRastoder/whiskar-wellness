@@ -1,4 +1,5 @@
 "use client";
+
 import { Select } from "@/components/retroui/Select";
 import { useTransition, useState } from "react";
 import { Input } from "@/components/retroui/Input";
@@ -13,89 +14,99 @@ export default function DoctorSignUpComponent() {
   const [specialty, setSpecialty] = useState("");
 
   return (
-    <div className="min-h-[90vh] bg-gray-50 flex items-start justify-center pt-10 px-4 mb-10">
-      <Card className="border-black border-6">
-        {/* Header */}
-        <div className="bg-red-300 p-8">
-          <h1 className="text-3xl font-extrabold">Create New Account</h1>
-          <p>Join us today! Enter your details to create your account.</p>
+    <div className="min-h-screen bg-gray-50 flex items-start justify-center pt-6 px-4">
+      <Card className="w-full max-w-4xl shadow-lg">
+        {/* HEADER */}
+        <div className="bg-red-300 p-5 sm:p-6">
+          <h1 className="text-xl sm:text-2xl font-extrabold">
+            Create your Doctor Profile
+          </h1>
+          <p className="text-sm opacity-80">
+            Join the platform and start helping patients today
+          </p>
         </div>
-        {/* Body */}
-        <div className="p-8 space-y-6">
+
+        {/* BODY */}
+        <div className="p-5 sm:p-6">
           <form
             action={(formData) => {
-              // Add specialty to formData if using custom Select
-              if (specialty) {
-                formData.append("specialty", specialty);
-              }
-              startTransition(async () => {
-                const res = await doctorSignUpAction(formData);
+              if (specialty) formData.append("specialty", specialty);
 
-                // Type-safe error handling
-                if ("issues" in res && res.issues) {
-                  alert(
-                    "Validation errors:\n" +
-                      res.issues
-                        .map((i) => `${i.field}: ${i.message}`)
-                        .join("\n"),
-                  );
-                } else if ("error" in res && res.error) {
-                  alert(res.error);
-                } else if (res.success) {
-                  alert("Account created successfully!");
-                }
+              startTransition(async () => {
+                await doctorSignUpAction(formData);
               });
             }}
-            className="space-y-5"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
-            <div>
-              <Label>FULL NAME</Label>
-              <Input
-                name="name"
-                placeholder="John Doe"
-                className="h-12"
-                required
-              />
-            </div>
-
-            <div>
-              <Label>USERNAME</Label>
-              <Input
-                name="username"
-                placeholder="johndoe123"
-                className="h-12"
-                required
-              />
-            </div>
-
-            <div>
-              <Label>EMAIL</Label>
-              <Input name="email" type="email" className="h-12" required />
-            </div>
-
-            <div>
-              <Label>PASSWORD</Label>
-              <Input
-                name="password"
-                type="password"
-                className="h-12"
-                required
-              />
-            </div>
-
-            <div className="flex justify-between items-center gap-4">
+            {/* LEFT */}
+            <div className="space-y-3">
               <div>
-                <Label>SPECIALTY</Label>
+                <Label>Full Name</Label>
+                <Input
+                  name="name"
+                  placeholder="e.g. Dr. John Smith"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>Username</Label>
+                <Input
+                  name="username"
+                  placeholder="e.g. drjohnsmith"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>Email Address</Label>
+                <Input
+                  name="email"
+                  type="email"
+                  placeholder="you@clinic.com"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>Password</Label>
+                <Input
+                  name="password"
+                  type="password"
+                  placeholder="Create a secure password"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>Country</Label>
+                <Input
+                  name="country"
+                  placeholder="e.g. Serbia"
+                  className="h-10"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="space-y-3">
+              <div>
+                <Label>Specialty</Label>
                 <Select value={specialty} onValueChange={setSpecialty}>
-                  <Select.Trigger className="w-60">
-                    <Select.Value placeholder="Select specialty" />
+                  <Select.Trigger className="w-full h-10">
+                    <Select.Value placeholder="Choose your medical specialty" />
                   </Select.Trigger>
                   <Select.Content>
                     <Select.Group>
                       <Select.Item value="general_medicine">
                         General Medicine
                       </Select.Item>
-                      <Select.Item value="dental">Dental</Select.Item>
+                      <Select.Item value="dental">Dentistry</Select.Item>
                       <Select.Item value="cardiology">Cardiology</Select.Item>
                       <Select.Item value="dermatology">Dermatology</Select.Item>
                       <Select.Item value="surgery">Surgery</Select.Item>
@@ -105,78 +116,78 @@ export default function DoctorSignUpComponent() {
               </div>
 
               <div>
-                <Label>PRICE</Label>
+                <Label>Consultation Price</Label>
                 <Input
                   type="number"
                   name="price"
-                  placeholder="Price Per Session"
+                  placeholder="e.g. 50"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>License Number</Label>
+                <Input
+                  type="number"
+                  name="vetLicenseNumber"
+                  placeholder="Your official license ID"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>Experience (Years)</Label>
+                <Input
+                  type="number"
+                  name="experience"
+                  placeholder="e.g. 5"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>City</Label>
+                <Input
+                  name="city"
+                  placeholder="e.g. Belgrade"
+                  className="h-10"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label>Clinic Address</Label>
+                <Input
+                  name="address"
+                  placeholder="Street, building, clinic name"
+                  className="h-10"
                   required
                 />
               </div>
             </div>
 
-            <div>
-              <Label>VET LICENSE NUMBER</Label>
-              <Input
-                type="number"
-                name="vetLicenseNumber"
-                placeholder="License Number"
-                required
-              />
+            {/* BUTTON */}
+            <div className="md:col-span-2 pt-2">
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="w-full py-2 text-base"
+              >
+                {isPending ? "Creating account..." : "Create Doctor Profile"}
+              </Button>
             </div>
-
-            <div>
-              <Label>YEARS OF EXPERIENCE</Label>
-              <Input type="number" name="experience" placeholder="0" required />
-            </div>
-
-            <div>
-              <Label>COUNTRY</Label>
-              <Input
-                type="text"
-                name="country"
-                placeholder="Serbia/USA..."
-                required
-              />
-            </div>
-
-            <div>
-              <Label>CITY</Label>
-              <Input
-                type="text"
-                name="city"
-                placeholder="Belgrade/Washington"
-                required
-              />
-            </div>
-
-            <div>
-              <Label>CLINIC ADDRESS</Label>
-              <Input
-                type="text"
-                name="address"
-                placeholder="Street Name"
-                required
-              />
-            </div>
-
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="w-full py-4 text-lg"
-            >
-              {isPending ? "LOADING..." : "CREATE ACCOUNT"}
-            </Button>
           </form>
 
-          <div className="text-center pt-4 border-t-2">
+          <div className="text-center pt-4 mt-4 border-t border-black/10">
             <Link
               href="/sign-in"
-              className="text-yellow-700 font-extrabold underline"
+              className="text-yellow-700 font-bold underline text-sm"
             >
-              Already have an account? Login
-            </Link>{" "}
-            {/* Change from </a> to </Link> */}
+              Already have an account? Sign in
+            </Link>
           </div>
         </div>
       </Card>
