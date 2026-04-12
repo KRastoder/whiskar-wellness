@@ -37,7 +37,6 @@ export default async function MyDoctorBookingsPage() {
 
   return (
     <div className="p-8 space-y-8">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h1 className="text-3xl font-bold">Bookings</h1>
@@ -49,7 +48,6 @@ export default async function MyDoctorBookingsPage() {
         <Badge>{sortedBookings.length} total</Badge>
       </div>
 
-      {/* Empty State */}
       {sortedBookings.length === 0 ? (
         <Card className="p-10 text-center">
           <Text>No bookings yet</Text>
