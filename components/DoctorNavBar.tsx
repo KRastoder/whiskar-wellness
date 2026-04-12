@@ -21,7 +21,7 @@ export default function DoctorNavBar() {
             <Link href="/my-patients">Patients</Link>
           </li>
           <li>
-            <Link href="/my-appointments">Appointments</Link>
+            <Link href="/my-doctor-bookings">Bookings</Link>
           </li>
           <li>
             <Link href="/availability">Availability</Link>
