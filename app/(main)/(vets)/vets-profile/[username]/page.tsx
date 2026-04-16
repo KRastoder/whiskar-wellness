@@ -17,13 +17,12 @@ type PageParams = {
 };
 
 export default async function DoctorPage({ params }: PageParams) {
-  // Authenticate user
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session) {
-    redirect("/");
+    redirect("/sign-up");
   }
 
   // Fetch doctor data

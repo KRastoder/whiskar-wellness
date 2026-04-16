@@ -23,11 +23,11 @@ export default async function MyDoctorBookingsPage() {
   const to = new Date();
   to.setDate(to.getDate() + 7);
 
-  const bookings: Booking[] = await getDoctorBookings({
-    doctorId: session.user.id,
+  const bookings: Booking[] = await getDoctorBookings(
+    session.user.id,
     from,
     to,
-  });
+  );
 
   const sortedBookings = bookings.sort(
     (a, b) =>
